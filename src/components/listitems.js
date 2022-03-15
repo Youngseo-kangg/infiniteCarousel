@@ -9,6 +9,17 @@ function Listitems({ data, idx, hidden, setHidden }) {
       return (acc += `#${cur}, `);
     }
   }, '');
+
+  let modIndex = (num) => {
+    let modNum = num;
+    if (num === 0) {
+      modNum = 10;
+    } else if (num === 11) {
+      modNum = 1;
+    }
+    return modNum;
+  };
+
   return (
     <li className='listitemWrapper'>
       <button className='swipeDown' onClick={() => setHidden(!hidden)}></button>
@@ -17,7 +28,7 @@ function Listitems({ data, idx, hidden, setHidden }) {
         <section>
           <div className='mapInfo'>
             <h1>
-              {idx + 1}. {data.nm}
+              {modIndex(idx)}. {data.nm}
             </h1>
             <div className='geoInfo'>
               <p>{data.area}</p>

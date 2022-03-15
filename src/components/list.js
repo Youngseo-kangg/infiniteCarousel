@@ -8,51 +8,34 @@ function List({ data }) {
   let [currentIdx, setCurrentIdx] = useState(0);
   const [width, setWidth] = useState(window.innerWidth - 10);
   const [hidden, setHidden] = useState(false);
-  const needData = 1;
   let ulRef = useRef();
 
   const changeBg = useCallback(() => {
     setWidth(window.innerWidth - 10);
   }, []);
-
-  // TODO : 무한 스와이프 위해 요소 복제
-  const handleData = () => {
-    let addedFront = [];
-    let addedLast = [];
-    let count = 0;
-    // 복사해서 집어넣기
-    while (count < needData) {
-      addedLast.push(data[currentIdx % data.length]);
-      addedFront.push(data[data.length - 1 - (currentIdx % data.length)]);
-      count++;
-    }
-    return [...addedFront, ...data, ...addedLast];
-  };
-  let modifiedData = handleData();
+  let modifiedData = [data[data.length - 1], ...data, data[0]];
 
   // TODO : 좌우 스와이프 하면 이동 구현
   const handleGesture = (index) => {
     let targetIdx = 0;
-    // 맨 마지막 슬라이드를 복제한 슬라이드에서 움직인 경우
-    if (index === -1) {
-      if (touchEnd < touchStart) {
-        targetIdx = 1; // 다음 슬라이드로 이동
-      } else if (touchEnd > touchStart) {
-        targetIdx = data.length - 1; // 이전 슬라이드로 이동
-      }
-    }
-    if (touchEnd < touchStart) {
-      targetIdx = index + 1; // 다음 슬라이드로 이동
+    if (touchEnd < touchStart || (touchStart === 0 && touchEnd === 0)) {
+      targetIdx = index + 1; // 다음 슬라이드 인덱스로 이동
     } else if (touchEnd > touchStart) {
-      targetIdx = index - 1; // 이전 슬라이드로 이동
+      targetIdx = index - 1; // 이전 슬라이드 인덱스로 이동
     }
-    if (targetIdx < 0) {
-      targetIdx = data.length - 1;
-    } else if (targetIdx > data.length - 1) {
-      targetIdx = 1;
+    if (targetIdx <= 0 && touchStart !== 0 && touchEnd !== 0) {
+      setCurrentIdx(targetIdx);
+      setTimeout(() => {
+        setCurrentIdx(modifiedData.length - 2);
+      }, 500); // 1초 있다가 한번 더 바꿈
+    } else if (targetIdx >= modifiedData.length - 1) {
+      setCurrentIdx(targetIdx);
+      setTimeout(() => {
+        setCurrentIdx(1);
+      }, 500); // 1초 있다가 한번 더 바꿈
+    } else {
+      setCurrentIdx(targetIdx);
     }
-
-    setCurrentIdx(targetIdx);
   };
 
   useEffect(() => {
@@ -76,12 +59,13 @@ function List({ data }) {
         <ul
           ref={ulRef}
           id='list'
-          onClick={() => setHidden(!hidden)}
           className={hidden ? 'hidden' : 'show'}
           style={{
             transform: `translateX(-${currentIdx * width}px)`,
             transition: `${
-              currentIdx < 0 || currentIdx > data.length - 1 ? '' : 'all 0.5s'
+              currentIdx <= 1 || currentIdx > modifiedData.length - 1
+                ? ''
+                : 'all 0.5s'
             }`,
           }}
         >
