@@ -1,38 +1,116 @@
 .App {
-  text-align: center;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: grid;
+  place-items: end center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#show {
+  width: 100vw;
+  min-height: 160px;
+  overflow: hidden;
+  position: relative;
+}
+#list {
+  width: auto;
+  height: 150px;
+  display: grid;
+  grid-template-columns: repeat(10, calc(100vw - 20px));
+  column-gap: 10px;
+  padding: 0px 10px;
+}
+#list.show {
+  position: absolute;
+  top: 0px;
+}
+#list.hidden {
+  position: absolute;
+  top: 100px;
+}
+.listitemWrapper {
+  width: 100%;
+  min-width: 340px;
+  min-height: 150px;
+  padding: 0px 10px;
+  box-sizing: border-box;
+  background-color: #fff;
+  display: grid;
+  grid-template-rows: 30px 1fr;
+  place-items: center;
+  box-shadow: 0 -0.2px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.swipeDown {
+  width: 70px;
+  height: 5px;
+  border-radius: 2.5px;
+  background-color: rgba(80, 80, 80, 0.9);
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.listitem {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  grid-template-columns: 100px 1fr;
+}
+.listitem > section {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  row-gap: 2px;
+}
+.listitem > img {
+  width: 84px;
+  height: 84px;
+}
+.mapInfo {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
-
-.App-link {
-  color: #61dafb;
+.geoInfo {
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.geoInfo > p:first-child:after {
+  content: '|';
+  margin: 0px 6px;
+}
+h1 {
+  font-size: 18px;
+  line-height: 18px;
+  font-weight: bold;
+}
+p {
+  font-size: 13px;
+  line-height: 14px;
+  display: flex;
+  align-items: center;
+}
+.keywords {
+  color: #9e9e9e;
+}
+.scoreInfo,
+.starInfo {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+.numberInfo,
+.heartInfo {
+  display: flex;
+  align-items: center;
+}
+.heartInfo > img,
+.starInfo > img {
+  width: 14px;
+  height: 13px;
+}
+.scoreInfo p > span {
+  font-weight: bold;
+  color: #09d2e5;
 }
